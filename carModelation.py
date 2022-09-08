@@ -3,8 +3,31 @@ from pygame import gfxdraw
 from scipy.spatial import distance
 from copy import deepcopy
 from collections import deque
+import json
 
 import numpy as np
+
+#copy to json 
+d = { "agents": [
+    {
+      "agentId": 0,
+      "type": 0 # Vehicle
+    }
+  ],
+     "steps": [
+    {
+      "StepInfo": {
+        "agentId": 0, # Vehicle.
+        "stepIndex": 0, # Integer number of sequence order.
+        "time": 0, # Elapsed time ms.
+        "state": 0, # For example 0: Stoped, 1: Moving.
+        "positionX": 0,
+        "positionY": 0,
+        "positionZ": 0,
+      }
+    }
+     ]
+    }
 
 class Window:
     def __init__(self, sim, config={}):
@@ -37,6 +60,7 @@ class Window:
         self.step_size2 = 1/5
         self.currentIndex = 0
         self.currentIndex2 = 0
+        self.step = 1;
 
         self.tfstate = [(0,0,0),(0,0,0)]
 
@@ -56,7 +80,7 @@ class Window:
 
         # Draw loop
         running = True
-        while running:
+        while running and self.step<3000: #3000 quits the program 
             # Update simulation
             if loop:
                 loop(self.sim)
@@ -73,6 +97,8 @@ class Window:
                 # Quit program if window is closed
                 if event.type == pygame.QUIT:
                     running = False
+            self.step = self.step + 1
+            print(self.step)
         pygame.quit()
 
     def run(self, steps_per_update=1):
@@ -346,6 +372,40 @@ class Window:
         self.rotated_box((x2, y2), (l, h), cos=cos2, sin=sin2, centered=True, color=(255, 0, 0))
         self.pos2 = self.pos2 + self.step_size2
 
+
+        #info car 1 (blue)
+        agent ={
+          "StepInfo": {
+            "agentId": 0, # Vehicle.
+            "stepIndex": self.step, # Integer number of sequence order.
+            "time": self.sim.t, # Elapsed time ms.
+            "state": 0, # For example 0: Stoped, 1: Moving.
+            "positionX": x,
+            "positionY": y,
+            "positionZ": 0,
+          }
+        }
+      
+        with open ('data_file.json', 'a') as data_file:
+             json.dump(agent, data_file, indent = 4)  #append 2 json
+
+
+        #info car 2 (red)
+        agent2 ={
+          "StepInfo": {
+            "agentId": 1, # Vehicle.
+            "stepIndex": self.step, # Integer number of sequence order.
+            "time": self.sim.t, # Elapsed time ms.
+            "state": 0, # For example 0: Stoped, 1: Moving.
+            "positionX": x2,
+            "positionY": y2,
+            "positionZ": 0,
+          }
+        }
+      
+        with open ('data_file2.json', 'a') as data_file2:
+             json.dump(agent2, data_file2, indent = 4)  #append 2 json
+     
 class Simulation:
     def __init__(self, config={}):
         # Set default configuration
