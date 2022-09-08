@@ -15,19 +15,19 @@ d = { "agents": [
     }
   ],
      "steps": [
-    {
-      "StepInfo": {
-        "agentId": 0, # Vehicle.
-        "stepIndex": 0, # Integer number of sequence order.
-        "time": 0, # Elapsed time ms.
-        "state": 0, # For example 0: Stoped, 1: Moving.
-        "positionX": 0,
-        "positionY": 0,
-        "positionZ": 0,
-      }
-    }
-     ]
-    }
+         {
+            "StepInfo": {
+            "agentId": 0, # Vehicle.
+            "stepIndex": 0, # Integer number of sequence order.
+            "time": 0, # Elapsed time ms.
+            "state": 0, # For example 0: Stoped, 1: Moving.
+            "positionX": 0,
+            "positionY": 0,
+            "positionZ": 0,
+            }
+        }
+    ]
+}
 
 class Window:
     def __init__(self, sim, config={}):
@@ -98,7 +98,7 @@ class Window:
                 if event.type == pygame.QUIT:
                     running = False
             self.step = self.step + 1
-            print(self.step)
+            #print(self.step)
         pygame.quit()
 
     def run(self, steps_per_update=1):
@@ -374,37 +374,47 @@ class Window:
 
 
         #info car 1 (blue)
-        agent ={
+ 
+        agent = {
           "StepInfo": {
             "agentId": 0, # Vehicle.
             "stepIndex": self.step, # Integer number of sequence order.
             "time": self.sim.t, # Elapsed time ms.
-            "state": 0, # For example 0: Stoped, 1: Moving.
+            #"state": longitud, # For example 0: Stoped, 1: Moving.
             "positionX": x,
             "positionY": y,
             "positionZ": 0,
           }
         }
-      
-        with open ('data_file.json', 'a') as data_file:
-             json.dump(agent, data_file, indent = 4)  #append 2 json
+        
+        with open ('data_file.json', "r+") as data_file:
+            data = json.load(data_file)
+            
+            data["steps"].append(agent["StepInfo"])
+            data_file.seek(0)
+            json.dump(data, data_file, indent = 4)  #append 1 json
 
-
+        
         #info car 2 (red)
-        agent2 ={
+        agent2 = {
           "StepInfo": {
             "agentId": 1, # Vehicle.
             "stepIndex": self.step, # Integer number of sequence order.
             "time": self.sim.t, # Elapsed time ms.
-            "state": 0, # For example 0: Stoped, 1: Moving.
+            #"state": self.tfstate, # For example 0: Stoped, 1: Moving.
             "positionX": x2,
             "positionY": y2,
             "positionZ": 0,
           }
         }
       
-        with open ('data_file2.json', 'a') as data_file2:
-             json.dump(agent2, data_file2, indent = 4)  #append 2 json
+        with open ('data_file2.json', "r+") as data_file2:
+            data2 = json.load(data_file2)
+            
+            data2["steps"].append(agent2["StepInfo"])
+            data_file2.seek(0)
+            json.dump(data2, data_file2, indent = 4)  #append 2 json
+             
      
 class Simulation:
     def __init__(self, config={}):
