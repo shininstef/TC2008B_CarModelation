@@ -380,7 +380,7 @@ class Window:
             "agentId": 0, # Vehicle.
             "stepIndex": self.step, # Integer number of sequence order.
             "time": self.sim.t, # Elapsed time ms.
-            #"state": longitud, # For example 0: Stoped, 1: Moving.
+            "state": 0, # For example 0: Stoped, 1: Moving.
             "positionX": x,
             "positionY": y,
             "positionZ": 0,
@@ -390,7 +390,7 @@ class Window:
         with open ('data_file.json', "r+") as data_file:
             data = json.load(data_file)
             
-            data["steps"].append(agent["StepInfo"])
+            data["steps"].append(agent)
             data_file.seek(0)
             json.dump(data, data_file, indent = 4)  #append 1 json
 
@@ -401,7 +401,7 @@ class Window:
             "agentId": 1, # Vehicle.
             "stepIndex": self.step, # Integer number of sequence order.
             "time": self.sim.t, # Elapsed time ms.
-            #"state": self.tfstate, # For example 0: Stoped, 1: Moving.
+            "state": 0, # For example 0: Stoped, 1: Moving.
             "positionX": x2,
             "positionY": y2,
             "positionZ": 0,
@@ -411,7 +411,7 @@ class Window:
         with open ('data_file2.json', "r+") as data_file2:
             data2 = json.load(data_file2)
             
-            data2["steps"].append(agent2["StepInfo"])
+            data2["steps"].append(agent2)
             data_file2.seek(0)
             json.dump(data2, data_file2, indent = 4)  #append 2 json
              
