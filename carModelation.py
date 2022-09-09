@@ -419,7 +419,7 @@ class Window:
             "stepIndex": self.step, # Integer number of sequence order.
             "time": self.sim.t, # Elapsed time ms.
             "state": self.tfstateJSON[0], 
-            "positionX": 0,
+            "positionX": 3,
             "positionY": -4,
             "positionZ": 10,
           }
