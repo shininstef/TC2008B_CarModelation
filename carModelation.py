@@ -415,24 +415,24 @@ class Window:
 
         agent3 = {
           "StepInfo": {
-            "agentId": 3, # Vehicle.
+            "agentId": 2, # Vehicle.
             "stepIndex": self.step, # Integer number of sequence order.
             "time": self.sim.t, # Elapsed time ms.
             "state": self.tfstateJSON[0], 
-            "positionX": 300,
-            "positionY": 290,
+            "positionX": 0,
+            "positionY": 0,
             "positionZ": 0,
           }
         }
         
         agent4 = {
           "StepInfo": {
-            "agentId": 4, # Vehicle.
+            "agentId": 3, # Vehicle.
             "stepIndex": self.step, # Integer number of sequence order.
             "time": self.sim.t, # Elapsed time ms.
             "state": self.tfstateJSON[1],
-            "positionX": 290,
-            "positionY": 300,
+            "positionX": 10,
+            "positionY": 0,
             "positionZ": 0,
           }
         }
