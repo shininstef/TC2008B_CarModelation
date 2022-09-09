@@ -412,15 +412,15 @@ class Window:
             "positionZ": 0,
           }
         }
-        
+
         agent3 = {
           "StepInfo": {
             "agentId": 3, # Vehicle.
             "stepIndex": self.step, # Integer number of sequence order.
             "time": self.sim.t, # Elapsed time ms.
             "state": self.tfstateJSON[0], 
-            "positionX": 0,
-            "positionY": -100,
+            "positionX": 300,
+            "positionY": 290,
             "positionZ": 0,
           }
         }
@@ -431,8 +431,8 @@ class Window:
             "stepIndex": self.step, # Integer number of sequence order.
             "time": self.sim.t, # Elapsed time ms.
             "state": self.tfstateJSON[1],
-            "positionX": 20,
-            "positionY": -100,
+            "positionX": 290,
+            "positionY": 300,
             "positionZ": 0,
           }
         }
@@ -446,13 +446,6 @@ class Window:
             data["steps"].append(agent4)
             data_file.seek(0)
             json.dump(data, data_file, indent = 4)  #append 1 json
-      
-        #with open ('data_file2.json', "r+") as data_file2:
-            #data2 = json.load(data_file2)
-            
-            #data2["steps"].append(agent2)
-            #data_file2.seek(0)
-            #json.dump(data2, data_file2, indent = 4)  #append 2 json
             
             
              
