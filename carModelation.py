@@ -56,11 +56,11 @@ class Window:
 
         self.pos = 0
         self.pos2 = -5
-        self.step_size = 1/5
-        self.step_size2 = 1/5
+        self.step_size = 1/3
+        self.step_size2 = 1/3
         self.currentIndex = 0
         self.currentIndex2 = 0
-        self.step = 1;
+        self.step = 1
 
         self.tfstate = [(0,0,0),(0,0,0)]
         self.tfstateJSON = [0,0]
@@ -81,7 +81,7 @@ class Window:
 
         # Draw loop
         running = True
-        while running and self.step<3000: #3000 quits the program 
+        while running and self.step<10000: #3000 quits the program 
             # Update simulation
             if loop:
                 loop(self.sim)
@@ -305,7 +305,7 @@ class Window:
         self.screen.blit(text_frc, (100, 0))
 
     def checkLights(self, path, currentIndex, position, length):
-        pace = 1/5
+        pace = 1/3
 
         if(path[currentIndex] == 0 and position > length - 50):
             if (self.tfstate[0] == (255, 255, 0) and position > length - 20):
@@ -315,7 +315,7 @@ class Window:
             elif (self.tfstate[0] == (255,0,0) and position > length - 20):
                 pace = 1/15
             else:
-                pace = 1/5
+                pace = 1/3
     
         if(path[currentIndex] == 10 and position > length - 50):
             if (self.tfstate[1] == (255, 255, 0) and position > length - 20):
@@ -325,9 +325,9 @@ class Window:
             elif (self.tfstate[1] == (255,0,0) and position > length - 20):
                 pace = 1/15
             else:
-                pace = 1/5
+                pace = 1/3
         
-        return pace;
+        return pace
 
     def draw(self):
         # Fill background
@@ -345,8 +345,8 @@ class Window:
         longitud = self.sim.roads[path[self.currentIndex]].length
 
         #Check Traffic Light Color, If its red stop, if its yellow reduce the speed, if its green dont do nothing.
-        self.step_size = self.checkLights(path, self.currentIndex, self.pos, longitud);
-        self.step_size2 = self.checkLights(path2, self.currentIndex2, self.pos2, longitud);
+        self.step_size = self.checkLights(path, self.currentIndex, self.pos, longitud)
+        self.step_size2 = self.checkLights(path2, self.currentIndex2, self.pos2, longitud)
 
         if(path[self.currentIndex] == path2[self.currentIndex2]):
             if(self.pos2 > self.pos - 5):
@@ -354,7 +354,7 @@ class Window:
             elif(self.pos2 > self.pos - 10):
                 self.step_size2 = 1/20
             else:
-                self.step_size2 = 1/5
+                self.step_size2 = 1/3
             
         #Change Position form to the next street
         #Blue Car
@@ -447,8 +447,6 @@ class Window:
             data_file.seek(0)
             json.dump(data, data_file, indent = 4)  #append 1 json
             
-            
-             
      
 class Simulation:
     def __init__(self, config={}):
