@@ -63,6 +63,7 @@ class Window:
         self.step = 1;
 
         self.tfstate = [(0,0,0),(0,0,0)]
+        self.tfstateJSON = [0,0]
 
     def loop(self, loop=None):
         """Shows a window visualizing the simulation and runs the loop function."""
@@ -279,8 +280,20 @@ class Window:
         i = 0
         for light in self.sim.lights:
             self.circle(light.position, 4, light.state)
-            self.tfstate[i] = light.state;
+            self.tfstate[i] = light.state
+            if(self.tfstate[i] == (0, 255, 0)):
+                self.tfstateJSON[i] = 2
+            elif (self.tfstate[i] == (255, 255, 0)):
+                self.tfstateJSON[i] = 1
+            elif (self.tfstate[i] == (255, 0, 0)):
+                self.tfstateJSON[i] = 0
+            
+            #print("Semaforo1")
+            #print(self.tfstateJSON[0])
             i += 1
+            
+            #colors = [(0, 255, 0), (255, 255, 0), (255, 0, 0)]  # GREEN, YELLOW, RED, RED
+            #colorsJSON = [2, 1, 0] # GREEN, YELLOW, RED, RED
 
     def draw_status(self):
         text_fps = self.text_font.render(
@@ -387,14 +400,6 @@ class Window:
           }
         }
         
-        with open ('data_file.json', "r+") as data_file:
-            data = json.load(data_file)
-            
-            data["steps"].append(agent)
-            data_file.seek(0)
-            json.dump(data, data_file, indent = 4)  #append 1 json
-
-        
         #info car 2 (red)
         agent2 = {
           "StepInfo": {
@@ -407,13 +412,49 @@ class Window:
             "positionZ": 0,
           }
         }
-      
-        with open ('data_file2.json', "r+") as data_file2:
-            data2 = json.load(data_file2)
+        
+        agent3 = {
+          "StepInfo": {
+            "agentId": 3, # Vehicle.
+            "stepIndex": self.step, # Integer number of sequence order.
+            "time": self.sim.t, # Elapsed time ms.
+            "state": self.tfstateJSON[0], 
+            "positionX": 0,
+            "positionY": -100,
+            "positionZ": 0,
+          }
+        }
+        
+        agent4 = {
+          "StepInfo": {
+            "agentId": 4, # Vehicle.
+            "stepIndex": self.step, # Integer number of sequence order.
+            "time": self.sim.t, # Elapsed time ms.
+            "state": self.tfstateJSON[1],
+            "positionX": 20,
+            "positionY": -100,
+            "positionZ": 0,
+          }
+        }
+        
+        with open ('data_file.json', "r+") as data_file:
+            data = json.load(data_file)
             
-            data2["steps"].append(agent2)
-            data_file2.seek(0)
-            json.dump(data2, data_file2, indent = 4)  #append 2 json
+            data["steps"].append(agent)
+            data["steps"].append(agent2)
+            data["steps"].append(agent3)
+            data["steps"].append(agent4)
+            data_file.seek(0)
+            json.dump(data, data_file, indent = 4)  #append 1 json
+      
+        #with open ('data_file2.json', "r+") as data_file2:
+            #data2 = json.load(data_file2)
+            
+            #data2["steps"].append(agent2)
+            #data_file2.seek(0)
+            #json.dump(data2, data_file2, indent = 4)  #append 2 json
+            
+            
              
      
 class Simulation:
@@ -510,6 +551,10 @@ cicles = [
     [2, 2, 2, 0, 1]
 ]  # Posible Cicles 1 - GREEN, 2 - YELLOW, 3 - RED
 colors = [(0, 255, 0), (255, 255, 0), (255, 0, 0)]  # GREEN, YELLOW, RED, RED
+colorsJSON = [2, 1, 0] # GREEN, YELLOW, RED, RED
+# 0 - Rojo
+# 1 - Amarillo
+# 2 - Verde
 sim = Simulation()
 
 # Add multiple roads
